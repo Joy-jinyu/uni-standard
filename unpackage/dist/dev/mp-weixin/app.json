@@ -1,0 +1,40 @@
+{
+  "pages": [
+    "pages/index/index",
+    "pages/component/component",
+    "pages/api/api",
+    "pages/schema/schema"
+  ],
+  "window": {
+    "navigationBarTextStyle": "black",
+    "navigationBarTitleText": "uni-app",
+    "navigationBarBackgroundColor": "#F8F8F8",
+    "backgroundColor": "#F8F8F8"
+  },
+  "tabBar": {
+    "color": "#7A7E83",
+    "selectedColor": "#007AFF",
+    "borderStyle": "black",
+    "backgroundColor": "#F8F8F8",
+    "list": [
+      {
+        "pagePath": "pages/index/index",
+        "text": "主页"
+      },
+      {
+        "pagePath": "pages/component/component",
+        "text": "组件"
+      },
+      {
+        "pagePath": "pages/api/api",
+        "text": "API"
+      },
+      {
+        "pagePath": "pages/schema/schema",
+        "text": "Schema"
+      }
+    ]
+  },
+  "usingComponents": {},
+  "sitemapLocation": "sitemap.json"
+}

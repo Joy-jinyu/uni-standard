@@ -1,0 +1,1 @@
+"use strict";var e=require("../../../../common/vendor.js"),t=require("./i18n/index.js");const{t:n}=e.initVueI18n(t.messages),r={name:"no-data",props:{},data:()=>({title:n("no-data.title")}),created(e){},unmounted(){},methods:{}};var a=e._export_sfc(r,[["render",function(t,n,r,a,o,d){return{a:e.t(o.title)}}],["__scopeId","data-v-051e23d6"]]);wx.createComponent(a);
