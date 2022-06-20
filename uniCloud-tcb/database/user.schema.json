@@ -1,0 +1,24 @@
+{
+	"bsonType": "object",
+	"required": [],
+	"permission": {
+		"read": false,
+		"create": false,
+		"update": false,
+		"delete": false
+	},
+	"properties": {
+		"_id": {
+			"description": "ID，系统自动生成"
+		},
+		"username": {
+			"bsonType": "string",
+			"description": "用户名称",
+			"maxLength": 30,
+			"trim": "both",
+			"required": [
+				"SchemaField"
+			]
+		}
+	}
+}

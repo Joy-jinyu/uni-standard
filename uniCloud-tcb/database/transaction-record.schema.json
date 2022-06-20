@@ -1,0 +1,33 @@
+{
+  "bsonType": "object",
+  "required": [],
+  "permission": {
+    "read": true,
+    "create": false,
+    "update": false,
+    "delete": false
+  },
+  "properties": {
+    "_id": {
+      "description": "ID，系统自动生成"
+    },
+    "user_id": {
+      "bsonType": "string",
+      "description": "用户编号",
+      "trim": "both"
+    },
+    "purpose": {
+      "bsonType": "string",
+      "description": "用途",
+      "trim": "both"
+    },
+    "money": {
+      "bsonType": "int",
+      "description": "交易金额"
+    },
+    "transaction_time": {
+      "bsonType": "timestamp",
+      "description": "交易时间"
+    }
+  }
+}
