@@ -9817,6 +9817,7 @@ const createHook = (lifecycle) => (hook, target = getCurrentInstance()) => {
   !isInSSRComponentSetup && injectHook(lifecycle, hook, target);
 };
 const onShow = /* @__PURE__ */ createHook(ON_SHOW);
+const onReachBottom = /* @__PURE__ */ createHook(ON_REACH_BOTTOM);
 const onPullDownRefresh = /* @__PURE__ */ createHook(ON_PULL_DOWN_REFRESH);
 function t(e2) {
   return e2 && e2.__esModule && Object.prototype.hasOwnProperty.call(e2, "default") ? e2.default : e2;
@@ -11824,6 +11825,7 @@ exports.n = n$1;
 exports.o = o$1;
 exports.onMounted = onMounted;
 exports.onPullDownRefresh = onPullDownRefresh;
+exports.onReachBottom = onReachBottom;
 exports.onShow = onShow;
 exports.p = p$1;
 exports.r = r$1;

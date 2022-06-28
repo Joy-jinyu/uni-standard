@@ -1,11 +1,14 @@
 <template>
-  <view class="transaction-list_wrapper">
+  <view
+    v-if="user.userId"
+    class="transaction-list_wrapper"
+  >
     <unicloud-db
       :ref="ref => (dbListRef = ref)"
       v-slot="{ data: records, error, loading }"
+      :page-size="10"
       collection="transaction-record"
       :where="`user_id=='${user.userId}'`"
-      manual
     >
       <view v-if="error">
         {{ error.message }}
@@ -37,13 +40,19 @@
 </template>
 
 <script setup>
-import { onShow, onReady, onPullDownRefresh } from '@dcloudio/uni-app'
+import { onShow, onReady, onReachBottom, onPullDownRefresh } from '@dcloudio/uni-app'
 import { onMounted, ref } from 'vue'
 import { formatDate } from '@/utils/date'
 import { userStore } from '@/store/user'
 
 const user = userStore()
 const dbListRef = ref(null)
+
+onShow(() => {
+  if (dbListRef.value) {
+    dbListRef.value.refresh()
+  }
+})
 
 onPullDownRefresh(async () => {
   dbListRef.value.loadData(
@@ -57,10 +66,8 @@ onPullDownRefresh(async () => {
   )
 })
 
-onShow(() => {
-  if (dbListRef.value) {
-    dbListRef.value.refresh()
-  }
+onReachBottom(() => {
+    dbListRef.value.loadMore()
 })
 
 const goDetail = ({ _id }) => {

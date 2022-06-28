@@ -18,6 +18,11 @@ const _sfc_main = {
   setup(__props) {
     const user = store_user.userStore();
     const dbListRef = common_vendor.ref(null);
+    common_vendor.onShow(() => {
+      if (dbListRef.value) {
+        dbListRef.value.refresh();
+      }
+    });
     common_vendor.onPullDownRefresh(async () => {
       dbListRef.value.loadData({
         clear: true
@@ -25,10 +30,8 @@ const _sfc_main = {
         common_vendor.index.stopPullDownRefresh();
       });
     });
-    common_vendor.onShow(() => {
-      if (dbListRef.value) {
-        dbListRef.value.refresh();
-      }
+    common_vendor.onReachBottom(() => {
+      dbListRef.value.loadMore();
     });
     const goDetail = ({ _id }) => {
       dbListRef.value.remove(_id);
@@ -39,8 +42,10 @@ const _sfc_main = {
       });
     };
     return (_ctx, _cache) => {
-      return {
-        a: common_vendor.w(({
+      return common_vendor.e({
+        a: common_vendor.unref(user).userId
+      }, common_vendor.unref(user).userId ? {
+        b: common_vendor.w(({
           data: records,
           error,
           loading
@@ -71,18 +76,18 @@ const _sfc_main = {
           });
         }, {
           name: "d",
-          path: "a",
+          path: "b",
           vueId: "0c33a63f-0"
         }),
-        b: common_vendor.sr((ref) => dbListRef.value = ref, "0c33a63f-0"),
-        c: (ref) => dbListRef.value = ref,
-        d: common_vendor.p({
+        c: common_vendor.sr((ref) => dbListRef.value = ref, "0c33a63f-0"),
+        d: (ref) => dbListRef.value = ref,
+        e: common_vendor.p({
+          ["page-size"]: 10,
           collection: "transaction-record",
-          where: `user_id=='${common_vendor.unref(user).userId}'`,
-          manual: true
+          where: `user_id=='${common_vendor.unref(user).userId}'`
         }),
-        e: common_vendor.o(goAddTransaction)
-      };
+        f: common_vendor.o(goAddTransaction)
+      } : {});
     };
   }
 };
