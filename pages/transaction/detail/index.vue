@@ -8,8 +8,8 @@
           rules: [
             {
               required: true,
-              errorMessage: '请输入金额',
-            },
+              errorMessage: '请输入金额'
+            }
           ]
         }
       }"
@@ -51,7 +51,10 @@
         />
       </uni-forms-item>
     </uni-forms>
-    <button @click="addTransaction">
+    <button
+      type="primary"
+      @click="addTransaction"
+    >
       保存
     </button>
   </view>
@@ -79,8 +82,30 @@ const addTransaction = () => {
         transaction_time: new Date(transaction.transaction_time).getTime(),
         user_id: user.userId
       }
-      const result = await db.collection('transaction-record').add(transactionRecord)
-      console.log(result)
+      try {
+        const result = await db.collection('transaction-record').add(transactionRecord)
+
+        uni.showModal({
+          content: '添加成功',
+          cancelText: '继续添加',
+          success: function(res) {
+            if (res.confirm) {
+              uni.navigateBack()
+            } else if (res.cancel) {
+              Object.assign(transaction, {
+                money: undefined,
+                transaction_time: '',
+                purpose: ''
+              })
+            }
+          }
+        })
+      } catch (error) {
+        uni.showToast({
+          title: '人气大爆发',
+          icon: 'error'
+        })
+      }
     }
   })
 }
@@ -88,6 +113,6 @@ const addTransaction = () => {
 
 <style lang="scss">
 .transaction-detail__wrapper {
-  padding: 0 20px;
+  padding: 0 12px;
 }
 </style>

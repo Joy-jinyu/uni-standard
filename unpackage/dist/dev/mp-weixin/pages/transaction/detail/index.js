@@ -52,8 +52,29 @@ const _sfc_main = {
             transaction_time: new Date(transaction.transaction_time).getTime(),
             user_id: user.userId
           });
-          const result = await db.collection("transaction-record").add(transactionRecord);
-          console.log(result);
+          try {
+            const result = await db.collection("transaction-record").add(transactionRecord);
+            common_vendor.index.showModal({
+              content: "\u6DFB\u52A0\u6210\u529F",
+              cancelText: "\u7EE7\u7EED\u6DFB\u52A0",
+              success: function(res) {
+                if (res.confirm) {
+                  common_vendor.index.navigateBack();
+                } else if (res.cancel) {
+                  Object.assign(transaction, {
+                    money: void 0,
+                    transaction_time: "",
+                    purpose: ""
+                  });
+                }
+              }
+            });
+          } catch (error2) {
+            common_vendor.index.showToast({
+              title: "\u4EBA\u6C14\u5927\u7206\u53D1",
+              icon: "error"
+            });
+          }
         }
       });
     };

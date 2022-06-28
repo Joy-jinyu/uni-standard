@@ -2,6 +2,7 @@
 import { userStore } from '@/store/user'
 export default {
   onLaunch: async function() {
+    uni.hideTabBar()
     const user = userStore()
     const loginInfo = await this.getLoginInfo()
     const { openid, session_key } = await this.getUserOpenId(loginInfo)
@@ -15,6 +16,9 @@ export default {
   },
   onHide: function() {
     console.log('App Hide')
+  },
+  onLoad: function () {
+    uni.hideTabBar()
   },
   methods: {
     getLoginInfo() {

@@ -24,5 +24,5 @@
 /* 透明度 */
 /* 文章场景相关 */
 .transaction-detail__wrapper {
-  padding: 0 20px;
+  padding: 0 12px;
 }

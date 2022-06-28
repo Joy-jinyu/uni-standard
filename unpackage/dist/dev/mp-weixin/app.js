@@ -11,6 +11,7 @@ if (!Math) {
 }
 const _sfc_main = {
   onLaunch: async function() {
+    common_vendor.index.hideTabBar();
     const user = store_user.userStore();
     const loginInfo = await this.getLoginInfo();
     const { openid, session_key } = await this.getUserOpenId(loginInfo);
@@ -24,6 +25,9 @@ const _sfc_main = {
   },
   onHide: function() {
     console.log("App Hide");
+  },
+  onLoad: function() {
+    common_vendor.index.hideTabBar();
   },
   methods: {
     getLoginInfo() {

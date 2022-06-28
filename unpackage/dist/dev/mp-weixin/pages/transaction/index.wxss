@@ -26,6 +26,8 @@
 .transaction-list_wrapper {
   width: 100%;
   height: 100%;
+  padding: 0 12px;
+  box-sizing: border-box;
 }
 .transaction-list_wrapper > text {
   color: #007aff;

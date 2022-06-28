@@ -1,13 +1,11 @@
 <template>
-  <view
-    v-if="user.userId"
-    class="transaction-list_wrapper"
-  >
+  <view class="transaction-list_wrapper">
     <unicloud-db
       :ref="ref => (dbListRef = ref)"
       v-slot="{ data: records, error, loading }"
       collection="transaction-record"
       :where="`user_id=='${user.userId}'`"
+      manual
     >
       <view v-if="error">
         {{ error.message }}
@@ -29,14 +27,17 @@
         </uni-list>
       </view>
     </unicloud-db>
-    <button @click="goAddTransaction">
+    <button
+      type="primary"
+      @click="goAddTransaction"
+    >
       新增
     </button>
   </view>
 </template>
 
 <script setup>
-import { onShow, onPullDownRefresh } from '@dcloudio/uni-app'
+import { onShow, onReady, onPullDownRefresh } from '@dcloudio/uni-app'
 import { onMounted, ref } from 'vue'
 import { formatDate } from '@/utils/date'
 import { userStore } from '@/store/user'
@@ -45,8 +46,15 @@ const user = userStore()
 const dbListRef = ref(null)
 
 onPullDownRefresh(async () => {
-  dbListRef.value.refresh()
-  // uni.stopPullDownRefresh()
+  dbListRef.value.loadData(
+    {
+      clear: true
+    },
+    () => {
+      // 停止下拉刷新
+      uni.stopPullDownRefresh()
+    }
+  )
 })
 
 onShow(() => {
@@ -56,9 +64,7 @@ onShow(() => {
 })
 
 const goDetail = ({ _id }) => {
-  uni.navigateTo({
-    url: `/pages/transaction/detail/index?id=${_id}`
-  })
+  dbListRef.value.remove(_id)
 }
 
 const goAddTransaction = () => {
@@ -72,6 +78,8 @@ const goAddTransaction = () => {
 .transaction-list_wrapper {
   width: 100%;
   height: 100%;
+  padding: 0 12px;
+  box-sizing: border-box;
 
   > text {
     color: $uni-color-primary;
