@@ -1,9 +1,8 @@
 {
   "pages": [
-    "pages/index/index",
-    "pages/component/component",
-    "pages/api/api",
-    "pages/schema/schema"
+    "pages/transaction/index",
+    "pages/testLocal/index",
+    "pages/transaction/detail/index"
   ],
   "window": {
     "navigationBarTextStyle": "black",
@@ -18,20 +17,12 @@
     "backgroundColor": "#F8F8F8",
     "list": [
       {
-        "pagePath": "pages/index/index",
+        "pagePath": "pages/transaction/index",
         "text": "主页"
       },
       {
-        "pagePath": "pages/component/component",
-        "text": "组件"
-      },
-      {
-        "pagePath": "pages/api/api",
-        "text": "API"
-      },
-      {
-        "pagePath": "pages/schema/schema",
-        "text": "Schema"
+        "pagePath": "pages/testLocal/index",
+        "text": "Hello i18n"
       }
     ]
   },

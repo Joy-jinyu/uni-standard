@@ -5,13 +5,13 @@
     "include": []
   },
   "setting": {
-    "urlCheck": false,
-    "coverView": true,
-    "es6": true,
+    "urlCheck": true,
+    "minified": true,
     "postcss": true,
+    "es6": true,
+    "coverView": true,
     "lazyloadPlaceholderEnable": false,
     "preloadBackgroundData": false,
-    "minified": true,
     "autoAudits": false,
     "uglifyFileName": false,
     "uploadWithSourceMap": true,
@@ -24,18 +24,18 @@
     "useStaticServer": true,
     "showES6CompileOption": false,
     "checkInvalidKey": true,
+    "compileHotReLoad": true,
     "babelSetting": {
       "ignore": [],
       "disablePlugins": [],
       "outputPath": ""
     },
     "disableUseStrict": false,
-    "useCompilerPlugins": false,
-    "minifyWXML": true
+    "useCompilerPlugins": false
   },
   "compileType": "miniprogram",
   "libVersion": "2.24.6",
-  "appid": "touristappid",
+  "appid": "wx88e38268e6271bd1",
   "projectname": "play",
   "condition": {},
   "editorSetting": {

@@ -1,11 +1,19 @@
 <template>
-  <view class="transaction-list_wrapper">
+  <view
+    v-if="user.userId"
+    class="transaction-list_wrapper"
+  >
     <unicloud-db
-      v-slot="{ data: records, error }"
+      :ref="ref => (dbListRef = ref)"
+      v-slot="{ data: records, error, loading }"
       collection="transaction-record"
+      :where="`user_id=='${user.userId}'`"
     >
       <view v-if="error">
         {{ error.message }}
+      </view>
+      <view v-else-if="loading">
+        正在加载...
       </view>
       <view v-else>
         <uni-list>
@@ -13,7 +21,7 @@
             v-for="(record, index) of records"
             :key="index"
             :title="`${record.money}`"
-            :right-text="formatDate(record.transaction_time)"
+            :right-text="formatDate(record.transaction_time, 'yyyy-MM-dd')"
             :note="record.purpose"
             clickable
             @click="goDetail(record)"
@@ -21,24 +29,43 @@
         </uni-list>
       </view>
     </unicloud-db>
+    <button @click="goAddTransaction">
+      新增
+    </button>
   </view>
 </template>
 
 <script setup>
-  import { onMounted } from 'vue'
-  import { formatDate } from '@/utils/date'
+import { onShow, onPullDownRefresh } from '@dcloudio/uni-app'
+import { onMounted, ref } from 'vue'
+import { formatDate } from '@/utils/date'
+import { userStore } from '@/store/user'
 
-  onMounted(() => {
-    console.log('woshi')
-  })
+const user = userStore()
+const dbListRef = ref(null)
 
-  const goDetail = ({ _id }) => {
-    uni.navigateTo({
-      url: `/pages/transactionDetail/index?id=${_id}`,
+onPullDownRefresh(async () => {
+  dbListRef.value.refresh()
+  // uni.stopPullDownRefresh()
+})
 
-    })
+onShow(() => {
+  if (dbListRef.value) {
+    dbListRef.value.refresh()
   }
+})
 
+const goDetail = ({ _id }) => {
+  uni.navigateTo({
+    url: `/pages/transaction/detail/index?id=${_id}`
+  })
+}
+
+const goAddTransaction = () => {
+  uni.navigateTo({
+    url: '/pages/transaction/detail/index'
+  })
+}
 </script>
 
 <style lang="scss">

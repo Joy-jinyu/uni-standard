@@ -3,7 +3,8 @@
     {
       "path": "pages/transaction/index",
       "style": {
-        "navigationBarTitleText": "%index.home%"
+        "navigationBarTitleText": "%index.home%",
+        "enablePullDownRefresh": true
       }
     }, {
       "path": "pages/testLocal/index",
@@ -12,7 +13,7 @@
         "enablePullDownRefresh": false
       }
     }, {
-      "path": "pages/transactionDetail/index",
+      "path": "pages/transaction/detail/index",
       "style": {
         "navigationBarTitleText": "",
         "enablePullDownRefresh": false
