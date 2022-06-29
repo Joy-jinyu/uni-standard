@@ -1,9 +1,16 @@
 {
   "pages": [ //pages数组中第一项表示应用启动页，参考：https://uniapp.dcloud.io/collocation/pages
     {
-      "path": "pages/transaction/index",
+      "path": "pages/transaction/month",
       "style": {
-        "navigationBarTitleText": "%index.home%",
+        "navigationBarTitleText": "月账单",
+        "enablePullDownRefresh": false
+      }
+    },
+    {
+      "path": "pages/transaction/daily",
+      "style": {
+        "navigationBarTitleText": "日账单",
         "enablePullDownRefresh": true
       }
     }, {
@@ -13,12 +20,11 @@
         "enablePullDownRefresh": false
       }
     }, {
-      "path": "pages/transaction/detail/index",
+      "path": "pages/transaction/detail",
       "style": {
-        "navigationBarTitleText": "",
+        "navigationBarTitleText": "添加支出",
         "enablePullDownRefresh": false
       }
-
     }
   ],
   "tabBar": {
@@ -27,7 +33,7 @@
     "borderStyle": "black",
     "backgroundColor": "#F8F8F8",
     "list": [{
-      "pagePath": "pages/transaction/index",
+      "pagePath": "pages/transaction/month",
       "text": "%index.home%"
     }, {
       "pagePath": "pages/testLocal/index",

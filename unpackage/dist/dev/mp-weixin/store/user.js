@@ -3,7 +3,7 @@ var common_vendor = require("../common/vendor.js");
 const userStore = common_vendor.defineStore("user", {
   state: () => {
     return {
-      userId: ""
+      userId: "opUD35YQOKoRsbZGE5MURgTnIviM"
     };
   },
   actions: {
