@@ -21,8 +21,8 @@
     <view v-else>
       <uni-list>
         <uni-list-item
+          v-for="(record, index) of listState.records"
           :key="index"
-          for="(record, index) of records"
           :title="`${record.money}`"
           :right-text="formatDate(record.transaction_time, 'yyyy-MM-dd')"
           :note="record.purpose"
@@ -55,9 +55,9 @@ const listState = reactive({
 })
 
 const pagination = reactive({
-  pageSize: 10,
-  total: 10,
-  next: 1
+  pageSize: 20,
+  total: 20,
+  next: 1,
 })
 
 const queryState = reactive({})
@@ -71,7 +71,7 @@ onLoad(query => {
 const loadData = async () => {
   if (user.userId && queryState.time) {
     const { pageSize, next, total } = pagination
-    if (next * pageSize > total) return
+    if ((next - 1) * pageSize > total) return
     const db = uniCloud.database()
     try {
       const {
@@ -84,6 +84,7 @@ const loadData = async () => {
         .get({
           getCount: true
         })
+      console.log(data)
       listState.records = next === 1 ? data : listState.records.concat(data)
       pagination.next = next + 1
       pagination.total = count
@@ -108,6 +109,8 @@ onShow(() => {
 })
 
 onPullDownRefresh(async () => {
+  pagination.total = 10
+  pagination.next = 1
   await loadData()
   uni.stopPullDownRefresh()
 })

@@ -53,8 +53,8 @@ const listState = reactive({
 })
 
 const pagination = reactive({
-  pageSize: 10,
-  total: 10,
+  pageSize: 20,
+  total: 20,
   next: 1
 })
 
@@ -85,6 +85,8 @@ watchEffect(async () => {
 })
 
 onPullDownRefresh(async () => {
+  pagination.total = 10
+  pagination.next = 1
   await loadData()
   uni.stopPullDownRefresh()
 })
