@@ -43,7 +43,8 @@
 <script setup>
 import { onShow, onLoad, onReady, onReachBottom, onPullDownRefresh } from '@dcloudio/uni-app'
 import { onMounted, ref, reactive, watchEffect } from 'vue'
-import { formatDate } from '@/utils/date'
+import { formatDate } from '@/common/utils/date'
+import { usePagination } from '@/common/hooks/usePagination'
 import { userStore } from '@/store/user'
 
 const user = userStore()
@@ -54,11 +55,7 @@ const listState = reactive({
   loaded: false
 })
 
-const pagination = reactive({
-  pageSize: 20,
-  total: 20,
-  next: 1,
-})
+const { pagination, resetPagination } = usePagination()
 
 const queryState = reactive({})
 
@@ -74,6 +71,7 @@ const loadData = async () => {
     if ((next - 1) * pageSize > total) return
     const db = uniCloud.database()
     try {
+      listState.loading = true
       const {
         result: { data, count }
       } = await db
@@ -84,12 +82,13 @@ const loadData = async () => {
         .get({
           getCount: true
         })
-      console.log(data)
       listState.records = next === 1 ? data : listState.records.concat(data)
       pagination.next = next + 1
       pagination.total = count
     } catch (error) {
       listState.error = error
+    } finally {
+      listState.loading = false
     }
   }
 }
@@ -100,8 +99,7 @@ watchEffect(async () => {
 
 onShow(() => {
   if (listState.loaded) {
-    pagination.total = 10
-    pagination.next = 1
+    resetPagination()
     loadData()
   } else {
     listState.loaded = true
@@ -109,8 +107,7 @@ onShow(() => {
 })
 
 onPullDownRefresh(async () => {
-  pagination.total = 10
-  pagination.next = 1
+  resetPagination()
   await loadData()
   uni.stopPullDownRefresh()
 })
@@ -134,7 +131,7 @@ const goAddTransaction = () => {
 .transaction-daily_wrapper {
   width: 100%;
   height: 100%;
-  padding: 0 12px;
+  padding: 0 12px 12px;
   box-sizing: border-box;
 
   .list-status {

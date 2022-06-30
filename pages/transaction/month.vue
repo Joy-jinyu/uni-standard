@@ -42,7 +42,8 @@
 <script setup>
 import { onShow, onReady, onReachBottom, onPullDownRefresh } from '@dcloudio/uni-app'
 import { onMounted, ref, reactive, watchEffect } from 'vue'
-import { formatDate } from '@/utils/date'
+import { formatDate } from '@/common/utils/date'
+import { usePagination } from '@/common/hooks/usePagination'
 import { userStore } from '@/store/user'
 
 const user = userStore()
@@ -52,30 +53,33 @@ const listState = reactive({
   records: []
 })
 
-const pagination = reactive({
-  pageSize: 20,
-  total: 20,
-  next: 1
-})
+const { pagination, resetPagination } = usePagination()
 
 const loadData = async () => {
   const { pageSize, next, total } = pagination
   if (next * pageSize > total) return
   const db = uniCloud.database()
-  const {
-    result: { data, count }
-  } = await db
-    .collection('transaction-record')
-    .groupBy('user_id,transaction_time')
-    .groupField('sum(money) as monthMoney')
-    .skip(pageSize * (next - 1)) // 跳过前20条
-    .limit(pageSize) // 获取20条
-    .get({
-      getCount: true
-    })
-  listState.records = next === 1 ? data : listState.records.concat(data)
-  pagination.next = next + 1
-  pagination.total = count
+  try {
+    listState.loading = true
+    const {
+      result: { data, count }
+    } = await db
+      .collection('transaction-record')
+      .groupBy('user_id,transaction_time')
+      .groupField('sum(money) as monthMoney')
+      .skip(pageSize * (next - 1)) // 跳过前20条
+      .limit(pageSize) // 获取20条
+      .get({
+        getCount: true
+      })
+    listState.records = next === 1 ? data : listState.records.concat(data)
+    pagination.next = next + 1
+    pagination.total = count
+  } catch (error) {
+    listState.error = error
+  } finally {
+    listState.loading = false
+  }
 }
 
 watchEffect(async () => {
@@ -85,8 +89,7 @@ watchEffect(async () => {
 })
 
 onPullDownRefresh(async () => {
-  pagination.total = 10
-  pagination.next = 1
+  resetPagination()
   await loadData()
   uni.stopPullDownRefresh()
 })
@@ -112,7 +115,7 @@ const goAddTransaction = () => {
 .transaction-daily_wrapper {
   width: 100%;
   height: 100%;
-  padding: 0 12px;
+  padding: 0 12px 12px;
   box-sizing: border-box;
 
   .list-status {
